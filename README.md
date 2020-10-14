@@ -1,2 +1,3 @@
 # pypredictit
-Python bindings for PredictIt's API
+*pypredictit* provides Python bindings for the
+[PredictIt](https://predictit.org/) API.
