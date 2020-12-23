@@ -79,7 +79,7 @@ class Market(object):
 
         self._market_name = mkt_info["marketName"]
         self._market_type = mkt_info["marketType"]
-        if mkt_info["dateEndString"] == "N/A":
+        if mkt_info["dateEndString"] == "NA":
             self._end_date = None
         else:
             end_date = dt.datetime.strptime(
