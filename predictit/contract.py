@@ -280,8 +280,12 @@ class Contract(object):
 
         self._shares_owned = self._investment = 0
         for share in shares:
+            if '.' in share["dateExecuted"]:
+                str_format = "%Y-%m-%dT%H:%M:%S.%f"
+            else:
+                str_format = "%Y-%m-%dT%H:%M:%S"
             share["dateExecuted"] = dt.datetime.strptime(
-                share["dateExecuted"], "%Y-%m-%dT%H:%M:%S.%f"
+                share["dateExecuted"], str_format
             )
             self._shares_owned += share["sharesOwned"]
             self._investment += share["pricePerShare"] * share["sharesOwned"]
