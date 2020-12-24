@@ -79,12 +79,18 @@ class Market(object):
 
         self._market_name = mkt_info["marketName"]
         self._market_type = mkt_info["marketType"]
-        if mkt_info["dateEndString"] == "N/A":
-            self._end_date = None
-        else:
+
+        try:
             end_date = dt.datetime.strptime(
                 mkt_info["dateEndString"][:19], "%m/%d/%Y %I:%M %p"
             )
+        except ValueError:
+            # It used to read "N/A" if there was no end date; now (Dec
+            # 2020) it reads "NA".  EAFP should be more robust to any
+            # future changes in format than checking against a list of
+            # known null values.
+            self._end_date = None
+        else:
             tz_string = mkt_info["dateEndString"][19:].strip(" ()")
             if tz_string == "ET":
                 # Declare naive datetime as US East, then convert to UTC
@@ -100,6 +106,7 @@ class Market(object):
                     'PredictIt returned a timezone other than "ET" (should '
                     "not happen)"
                 )
+
         self._is_active = mkt_info["isActive"]
         self._rule = mkt_info["rule"]
         self._have_ownership = mkt_info["userHasOwnership"]
